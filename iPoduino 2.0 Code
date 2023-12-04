@@ -1,0 +1,244 @@
+#include <LiquidCrystal.h>
+
+#include "basicpitches.h"
+#include <LiquidCrystal.h>
+
+const int seven_nation_army_LED = 4;
+const int Giorno_theme_LED = 5;
+const int Another_one_bites_the_dust_LED = 7;
+const int Smoke_on_the_water_LED = 6;
+const int SPEAKER = 3;
+const int BUTTON_PIN = 2; 
+const int LCD_RS = 8;
+const int LCD_Enable = 9;
+const int LCD_D4 = 10;
+const int LCD_D5 = 11;
+const int LCD_D6 = 12;
+const int LCD_D7 = 13;
+
+byte lastButtonState;
+byte currentButtonState;
+
+void play(int note, int duration) {
+  int NOTE_DUR = 1.3;
+  tone(SPEAKER, note, duration);
+  delay(duration * NOTE_DUR); // Add a slight delay between notes for clarity
+  noTone(SPEAKER);
+  delay(duration * NOTE_DUR / 3); // A short pause between the notes
+}
+
+void seven_nation_army_play(){
+  play(NOTE_E4, 738);
+  play(NOTE_E4, 246);
+  play(NOTE_G4, 328);
+  play(NOTE_E4, 328);
+  play(NOTE_D4, 328);
+  play(NOTE_C4, 984);
+  play(NOTE_B3, 492);
+  delay(738);
+  play(NOTE_E4, 738);
+  play(NOTE_E4, 246);
+  play(NOTE_G4, 328);
+  play(NOTE_E4, 328);
+  play(NOTE_D4, 328);
+  play(NOTE_C4, 984);
+  play(NOTE_B3, 492);
+}
+
+void Giorno_theme_play(){
+  play(NOTE_B4, 231);
+  play(NOTE_B4, 231);
+  play(NOTE_B4, 115);
+  play(NOTE_A4, 115);
+  delay(115);
+  play(NOTE_B4, 115);
+  delay(115);
+  play(NOTE_D4, 115);
+  delay(115);
+  play(NOTE_B4, 115);
+  delay(115);
+  play(NOTE_FS4, 115);
+
+  play(NOTE_A4, 231);
+  play(NOTE_B4, 231);
+  play(NOTE_B4, 231);
+  play(NOTE_B4, 115);
+  play(NOTE_A4, 115);
+  delay(115);
+  play(NOTE_B4, 115);
+  delay(115);
+  play(NOTE_F4, 115);
+  delay(115);
+  play(NOTE_E4, 115);
+  delay(115);
+  play(NOTE_D4, 115);
+  play(NOTE_A4, 231);
+}
+
+void Smoke_on_the_water_play(){
+  play(NOTE_A4, 526);
+  play(NOTE_C5, 526);
+  play(NOTE_D5, 789);
+  play(NOTE_A4, 263);
+  delay(263);
+  play(NOTE_B4, 263);
+  delay(263);
+  play(NOTE_DS5, 263);
+  play(NOTE_D5, 1052);
+
+  play(NOTE_A4, 526);
+  play(NOTE_C5, 526);
+  play(NOTE_D5, 789);
+  play(NOTE_B4, 263);
+  delay(263);
+  play(NOTE_A4, 1447);
+}
+
+void Another_one_bites_the_dust_play(){
+  play(NOTE_A2, 134);
+  play(NOTE_G2, 134);
+  play(NOTE_E2, 535);
+  play(NOTE_E2, 535);
+  play(NOTE_E2, 535);
+  delay(401);
+  play(NOTE_E2, 134);
+  play(NOTE_E2, 268);
+  play(NOTE_E2, 268);
+  play(NOTE_G2, 268);
+  play(NOTE_E2, 134);
+  play(NOTE_A2, 401);
+  delay(401);
+  play(NOTE_A2, 134);
+  play(NOTE_G2, 134);
+  play(NOTE_E2, 535);
+  play(NOTE_E2, 535);
+  play(NOTE_E2, 535);
+  delay(401);
+  play(NOTE_E2, 134);
+  play(NOTE_E2, 268);
+  play(NOTE_E2, 268);
+  play(NOTE_G2, 268);
+  play(NOTE_E2, 134);
+  play(NOTE_A2, 401);
+  
+  
+  
+
+}
+
+
+
+LiquidCrystal lcd(LCD_RS, LCD_Enable, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(A1, INPUT);
+  pinMode(seven_nation_army_LED, OUTPUT);
+  pinMode(Giorno_theme_LED, OUTPUT);
+  pinMode(Another_one_bites_the_dust_LED, OUTPUT);
+  pinMode(Smoke_on_the_water_LED, OUTPUT);
+  pinMode(SPEAKER, OUTPUT);
+  pinMode(LCD_RS, OUTPUT);
+  pinMode(LCD_Enable, OUTPUT);
+  pinMode(LCD_D4, OUTPUT);
+  pinMode(LCD_D5, OUTPUT);
+  pinMode(LCD_D6, OUTPUT);
+  pinMode(LCD_D7, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT);
+
+  Serial.begin(9600);
+  
+  lcd.begin(16, 2);
+  
+
+}
+
+void loop() {
+  lastButtonState = currentButtonState;
+  currentButtonState = digitalRead(BUTTON_PIN);
+  if (lastButtonState == HIGH && currentButtonState == LOW) {
+    lastButtonState = currentButtonState;
+    if (analogRead(A1) >= 0 && analogRead(A1) < 250){ //Seven Nation Army
+
+      
+      digitalWrite(seven_nation_army_LED, HIGH);
+      Serial.println("Seven Nation Army - The White Stripes");
+
+      lcd.setCursor(0, 0);
+      lcd.print("Seven Nation Army");
+      lcd.setCursor(0, 1);
+      lcd.print("The White Stripes");
+      
+      seven_nation_army_play();
+      
+      digitalWrite(seven_nation_army_LED, LOW);
+      lcd.clear();
+      
+      
+
+    }
+
+    if (analogRead(A1) >= 250 && analogRead(A1) < 500){ //Giorno Theme
+
+      
+      digitalWrite(Giorno_theme_LED, HIGH);
+      Serial.println("Giorno Theme - Yugo Kanno");
+
+      lcd.setCursor(0, 0);
+      lcd.print("Giorno Theme");
+      lcd.setCursor(0, 1);
+      lcd.print("Yugo Kanno");
+
+      Giorno_theme_play();
+      
+      digitalWrite(Giorno_theme_LED, LOW);
+      lcd.clear();
+
+    }
+
+    if (analogRead(A1) >= 500 && analogRead(A1) < 750){ //Another One bites the Dust
+      
+      
+      digitalWrite(Another_one_bites_the_dust_LED, HIGH);
+      Serial.println("Another One Bites the Dust - Queen");
+
+      lcd.setCursor(0, 0);
+      lcd.print("Another One Bites the Dust");
+      lcd.setCursor(0, 1);
+      lcd.print("Queen");
+
+      Another_one_bites_the_dust_play();
+      
+      digitalWrite(Another_one_bites_the_dust_LED, LOW);
+      lcd.clear();
+
+    }
+
+    if (analogRead(A1) >= 750 && analogRead(A1) <= 1023){ //Smoke on the Water
+      
+      
+      digitalWrite(Smoke_on_the_water_LED, HIGH);
+      Serial.println("Smoke On The Water - Deep Purple");
+
+      lcd.setCursor(0, 0);
+      lcd.print("Smoke On The Water");
+      lcd.setCursor(0, 1);
+      lcd.print("Deep Purple");
+      
+      
+      Smoke_on_the_water_play();
+      
+      
+      digitalWrite(Smoke_on_the_water_LED, LOW);
+      lcd.clear();
+
+    }
+  
+  }
+
+}
+
+
+
+
+
